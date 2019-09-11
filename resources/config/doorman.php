@@ -45,7 +45,7 @@ return [
     |
     */
     'basic' => [
-        'length' => 5,
+        'length' => 10,
     ],
 
     /*

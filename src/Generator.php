@@ -11,8 +11,13 @@ class Generator
 {
     protected $amount = 1;
     protected $uses = 1;
+    protected $issuedTo = null;
     protected $email = null;
     protected $expiry;
+
+    protected $paymentMode = null;
+    protected $paymentTxnid = null;
+    protected $paymentAmount = null;
 
     /**
      * @var \Clarkeash\Doorman\DoormanManager
@@ -38,6 +43,34 @@ class Generator
     public function times(int $amount = 1)
     {
         $this->amount = $amount;
+
+        return $this;
+    }
+
+    /**
+     * @param int $user_id
+     *
+     * @return $this
+     */
+    public function issued_to(int $user_id = null)
+    {
+        $this->issuedTo = $user_id;
+
+        return $this;
+    }
+
+    /**
+     * @param int $paymentMode
+     * @param int $paymentTxnid
+     * @param int $paymentAmount
+     *
+     * @return $this
+     */
+    public function payment($paymentMode = null, $paymentTxnid = null, $paymentAmount = null)
+    {
+        $this->paymentMode = $paymentMode;
+        $this->paymentTxnid = $paymentTxnid;
+        $this->paymentAmount = $paymentAmount;
 
         return $this;
     }
@@ -97,7 +130,6 @@ class Generator
 
     /**
      * @return \Clarkeash\Doorman\Models\BaseInvite
-     * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
     protected function build(): BaseInvite
     {
@@ -106,6 +138,10 @@ class Generator
         $invite->for = $this->email;
         $invite->max = $this->uses;
         $invite->valid_until = $this->expiry;
+        $invite->user_to_id = $this->issuedTo;
+        $invite->payment_mode = $this->paymentMode;
+        $invite->payment_txnid = $this->paymentTxnid;
+        $invite->payment_amount = $this->paymentAmount;
 
         return $invite;
     }
@@ -113,7 +149,6 @@ class Generator
     /**
      * @return \Illuminate\Support\Collection
      * @throws DuplicateException
-     * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
     public function make()
     {

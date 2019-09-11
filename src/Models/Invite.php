@@ -118,4 +118,24 @@ class Invite extends BaseInvite
                 $this->scopeFull($q);
             });
     }
+
+    /**
+     * Buyer or person whom this Pin is issued to.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function issuedTo()
+    {
+        return $this->belongsTo('App\User', 'user_to_id');
+    }
+
+    /**
+     * User who claimed this Pin
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function claimedBy()
+    {
+        return $this->belongsTo('App\User', 'user_use_id');
+    }
 }

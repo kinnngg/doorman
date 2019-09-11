@@ -33,11 +33,12 @@ class Doorman
      * @throws MaxUsesReached
      * @throws NotYourInviteCode
      */
-    public function redeem($code, string $email = null)
+    public function redeem($code, string $email = null, $user_id = null)
     {
         $invite = $this->prep($code, $email);
 
         $invite->increment('uses');
+        $invite->update(['user_use_id' => $user_id]);
     }
 
     /**
@@ -114,9 +115,6 @@ class Doorman
         }
     }
 
-    /**
-     * @return Generator
-     */
     public function generate()
     {
         return app(Generator::class);

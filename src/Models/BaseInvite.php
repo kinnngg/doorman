@@ -18,9 +18,9 @@ use Illuminate\Database\Eloquent\Model;
  */
 abstract class BaseInvite extends Model
 {
-    protected $casts = [
-        'valid_until' => 'datetime'
-    ];
+    protected $dates = ['valid_until'];
+
+    protected $fillable = ['user_use_id'];
 
     public function __construct(array $attributes = [])
     {

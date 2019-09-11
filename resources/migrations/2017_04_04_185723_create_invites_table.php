@@ -20,6 +20,13 @@ class CreateInvitesTable extends Migration
             $table->integer('max')->default(1);
             $table->integer('uses')->default(0);
             $table->timestamp('valid_until')->nullable();
+
+            $table->unsignedInteger('user_to_id')->nullable();
+            $table->unsignedInteger('user_use_id')->nullable();
+
+            $table->string('payment_mode')->nullable();
+            $table->string('payment_txnid')->nullable();
+            $table->float('payment_amount')->nullable();
             $table->timestamps();
         });
     }
